@@ -10,7 +10,6 @@ namespace BOTC.Mappers
 		{
 			CreateMap<AddGameDTO, GameDTO>();
 			CreateMap<GameEntity, AddGameDTO>();
-            CreateMap<GameEntity, AddGameDTO>();
         }
     }
 }
