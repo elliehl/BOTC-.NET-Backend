@@ -1,13 +1,15 @@
 ﻿using BOTC.Models;
+using BOTC.Models.DTOs;
+using BOTC.Models.Entities;
 
 namespace BOTC.Services
 {
     public interface IGamesService
     {
-        Task<IEnumerable<Game>> GetGames();
-        Task <Game> GetGameById(int id);
-        Task AddGame(Game game);
+        Task<IEnumerable<AddGameDTO>> GetGames();
+        Task <AddGameDTO> GetGameById(int id);
+        Task AddGame(AddGameDTO game);
         Task DeleteGame(int gameId);
-        Task EditGame(Game game, int gameId);
+        Task EditGame(AddGameDTO game, int gameId);
     }
 }

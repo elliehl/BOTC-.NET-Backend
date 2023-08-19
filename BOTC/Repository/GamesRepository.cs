@@ -1,7 +1,8 @@
 ﻿using System;
 using Dapper;
-using BOTC.Models;
+using BOTC.Models.Entities;
 using BOTC.Data;
+using BOTC.Models.DTOs;
 
 namespace BOTC.Repository
 {
@@ -14,15 +15,19 @@ namespace BOTC.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<Game>> GetGames()
+        public async Task<IEnumerable<GameEntity>> GetGames()
         {
-            IEnumerable<Game> games = new List<Game>();
+            IEnumerable<GameEntity> games = new List<GameEntity>();
 
             try
             {
-                using var connection = _context.GetConnection();
-                var query = "SELECT * FROM games";
-                games = await connection.QueryAsync<Game>(query);
+                using var connection =  _context.GetConnection();
+                var query = "SELECT date, game_won, is_evil, comments, r.name AS starting_role, r1.name as final_role, t.name as                                                                                       type " +
+                  "FROM games g " +
+                  "JOIN roles r ON r.id = g.starting_role_id " +
+                  "JOIN roles r1 ON r1.id = g.final_role_id " +
+                  "JOIN types t ON t.id = r.type_id";
+                games = await connection.QueryAsync<GameEntity>(query);
             }
             catch (Exception ex)
             {
@@ -31,17 +36,17 @@ namespace BOTC.Repository
             }
             return games;
         }
-   
-        public async Task<Game> GetGameById(int gameId)
+
+        public async Task<GameEntity> GetGameById(int gameId)
         {
-            Game game = new Game();
+            GameEntity game = new GameEntity();
             var parameters = new { Id = gameId };
             var query = "SELECT * FROM games WHERE id = @Id";
 
             try
             {
                 using var connection = _context.GetConnection();
-                game = await connection.QueryFirstAsync<Game>(query, parameters);
+                game = await connection.QueryFirstAsync<GameEntity>(query, parameters);
             }
             catch (Exception ex)
             {
@@ -51,7 +56,7 @@ namespace BOTC.Repository
             return game;
         }
 
-        public async Task AddGame(Game game)
+        public async Task AddGame(GameDTO game)
         {
             var parameters = new { Date = game.Date, Game_Won = game.Game_Won, Is_Evil = game.Is_Evil, Comments = game.Comments,
                                    Starting_Role_Id = game.Starting_Role_Id, Final_Role_Id = game.Final_Role_Id};
@@ -88,7 +93,7 @@ namespace BOTC.Repository
             }
         }
 
-        public async Task EditGame(Game game, int gameId)
+        public async Task EditGame(GameDTO game, int gameId)
         {
             var parameters = new
             {
@@ -116,6 +121,31 @@ namespace BOTC.Repository
             }
         }
 
+        public async Task<int> GetRoleId(string role)
+        {
+            var parameters = new
+            {
+                Role = role
+            };
+
+            var query = "SELECT id FROM roles WHERE name = @Role";
+
+            try
+            {
+                using var connection = _context.GetConnection();
+                int Id = await connection.QuerySingleAsync<int>(query, parameters);
+                return Id;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            } 
+        }
+
+        public Task EditGame(GameEntity game, int gameId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
-

@@ -23,6 +23,8 @@
     <None Remove="Services\" />
     <None Remove="Data\" />
     <None Remove="Mappers\" />
+    <None Remove="Models\Entities\" />
+    <None Remove="Models\DTOs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -31,5 +33,7 @@
     <Folder Include="Services\" />
     <Folder Include="Data\" />
     <Folder Include="Mappers\" />
+    <Folder Include="Models\Entities\" />
+    <Folder Include="Models\DTOs\" />
   </ItemGroup>
 </Project>

@@ -1,14 +1,15 @@
-﻿using System;
-using BOTC.Models;
+﻿using BOTC.Models.DTOs;
+using BOTC.Models.Entities;
 namespace BOTC.Repository
 {
-	public interface IGamesRepository
+    public interface IGamesRepository
 	{
-        Task<IEnumerable<Game>> GetGames();
-        Task<Game> GetGameById(int id);
-        Task AddGame(Game game);
+        Task<IEnumerable<GameEntity>> GetGames();
+        Task<GameEntity> GetGameById(int id);
+        Task AddGame(GameDTO game);
         Task DeleteGame(int id);
-        Task EditGame(Game game, int gameId);
+        Task EditGame(GameDTO game, int gameId);
+        Task<int> GetRoleId(string startingRole);
     }
 }
 

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BOTC.Services;
-using BOTC.Models;
+﻿using BOTC.Services;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using BOTC.Models.DTOs;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -40,8 +36,13 @@ namespace BOTC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddGame([FromBody] Game game)
+        public async Task<IActionResult> AddGame([FromBody] AddGameDTO game)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             await _gamesService.AddGame(game);
             return Ok("Game successfully added");
         }
@@ -54,7 +55,7 @@ namespace BOTC.Controllers
         }
 
         [HttpPut("/{gameId}")]
-        public async Task<IActionResult> EditGame([FromBody] Game game, [FromRoute] int gameId)
+        public async Task<IActionResult> EditGame([FromBody] AddGameDTO game, [FromRoute] int gameId)
         {
             await _gamesService.EditGame(game, gameId);
             return Ok("Game successfully edited");

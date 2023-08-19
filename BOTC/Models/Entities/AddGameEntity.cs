@@ -1,7 +1,7 @@
 ﻿using System;
 namespace BOTC.Models
 {
-	public class Game
+	public class AddGameEntity
 	{
 		public int Id { get; set; }
 		public DateTime Date { get; set; }

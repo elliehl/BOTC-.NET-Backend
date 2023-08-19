@@ -1,31 +1,48 @@
 ﻿using System;
 using BOTC.Repository;
 using BOTC.Models;
+using BOTC.Models.DTOs;
+using AutoMapper;
+using BOTC.Models.Entities;
 
 namespace BOTC.Services
 {
 	public class GamesService : IGamesService
 	{
         private readonly IGamesRepository _gamesRepository;
+        private readonly IMapper _mapper;
 
-        public GamesService(IGamesRepository gamesRepository)
-		{
+
+        public GamesService(IGamesRepository gamesRepository, IMapper mapper)
+        {
             _gamesRepository = gamesRepository;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Game>> GetGames()
+        public async Task<IEnumerable<AddGameDTO>> GetGames()
         {
-            return await _gamesRepository.GetGames();
+            var x = await _gamesRepository.GetGames();
+            var mapped = x.Select(_mapper.Map<AddGameDTO>);
+            return mapped;
         }
 
-        public async Task<Game> GetGameById(int gameId)
+        public async Task<AddGameDTO> GetGameById(int gameId)
         {
-            return await _gamesRepository.GetGameById(gameId);
+            var x = await _gamesRepository.GetGameById(gameId);
+            var mapped = _mapper.Map<AddGameDTO>(x);
+            return mapped;
         }
 
-        public async Task AddGame(Game game)
+        public async Task AddGame(AddGameDTO game)
         {
-            await _gamesRepository.AddGame(game);
+            var startingRoleId = await _gamesRepository.GetRoleId(game.Starting_Role);
+            var finalRoleId = await _gamesRepository.GetRoleId(game.Final_Role);
+
+            var gameToSave = _mapper.Map<GameDTO>(game);
+            gameToSave.Starting_Role_Id = startingRoleId;
+            gameToSave.Final_Role_Id = finalRoleId;
+
+            await _gamesRepository.AddGame(gameToSave);
         }
 
         public async Task DeleteGame (int gameId)
@@ -33,9 +50,15 @@ namespace BOTC.Services
             await _gamesRepository.DeleteGame(gameId);
         }
 
-        public async Task EditGame (Game game, int gameId)
+        public async Task EditGame(AddGameDTO game, int gameId)
         {
-            await _gamesRepository.EditGame(game, gameId);
+            var startingRoleId = await _gamesRepository.GetRoleId(game.Starting_Role);
+            var finalRoleId = await _gamesRepository.GetRoleId(game.Final_Role);
+
+            var gameToSave = _mapper.Map<GameDTO>(game);
+            gameToSave.Starting_Role_Id = startingRoleId;
+            gameToSave.Final_Role_Id = finalRoleId;
+            await _gamesRepository.EditGame(gameToSave, gameId);
         }
     }
 }
