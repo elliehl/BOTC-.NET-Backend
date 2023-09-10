@@ -6,7 +6,7 @@ namespace BOTC.Repository
 {
 	public interface IStatsRepository
 	{
-		Task<IEnumerable<StatsDTO>> GetStatsByRole();
+		Task<IEnumerable<RoleStatsDTO>> GetStatsByRole();
 	}
 }
 

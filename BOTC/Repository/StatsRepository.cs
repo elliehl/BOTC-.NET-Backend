@@ -15,9 +15,9 @@ namespace BOTC.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<StatsDTO>> GetStatsByRole()
+        public async Task<IEnumerable<RoleStatsDTO>> GetStatsByRole()
         {
-            IEnumerable<StatsDTO> statsByRole = new List<StatsDTO>();
+            IEnumerable<RoleStatsDTO> statsByRole = new List<RoleStatsDTO>();
 
             try
             {
@@ -28,7 +28,7 @@ namespace BOTC.Repository
                             "FROM games g " +
                             "JOIN roles r ON r.id = g.starting_role_id " +
                             "GROUP BY starting_role";
-                statsByRole = await connection.QueryAsync<StatsDTO>(query);
+                statsByRole = await connection.QueryAsync<RoleStatsDTO>(query);
             }
             catch (Exception ex)
             {

@@ -5,7 +5,7 @@ namespace BOTC.Services
 {
 	public interface IStatsService
 	{
-        Task<IEnumerable<StatsDTO>> GetStatsByRole();
+        Task<IEnumerable<RoleStatsDTO>> GetStatsByRole();
     }
 }
 

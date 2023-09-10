@@ -14,7 +14,7 @@ namespace BOTC.Services
             _statsRepository = statsRepository;
         }
 
-        public async Task<IEnumerable<StatsDTO>> GetStatsByRole()
+        public async Task<IEnumerable<RoleStatsDTO>> GetStatsByRole()
         {
             return await _statsRepository.GetStatsByRole();
         }
