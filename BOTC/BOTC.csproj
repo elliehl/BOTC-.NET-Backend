@@ -25,6 +25,7 @@
     <None Remove="Mappers\" />
     <None Remove="Models\Entities\" />
     <None Remove="Models\DTOs\" />
+    <None Remove="Models\Responses\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -35,5 +36,6 @@
     <Folder Include="Mappers\" />
     <Folder Include="Models\Entities\" />
     <Folder Include="Models\DTOs\" />
+    <Folder Include="Models\Responses\" />
   </ItemGroup>
 </Project>

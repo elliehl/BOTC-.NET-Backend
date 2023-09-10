@@ -33,7 +33,7 @@ namespace BOTC.Services
             return mapped;
         }
 
-        public async Task AddGame(AddGameDTO game)
+        public async Task<int> AddGame(AddGameDTO game)
         {
             var startingRoleId = await _gamesRepository.GetRoleId(game.Starting_Role);
             var finalRoleId = await _gamesRepository.GetRoleId(game.Final_Role);
@@ -42,7 +42,7 @@ namespace BOTC.Services
             gameToSave.Starting_Role_Id = startingRoleId;
             gameToSave.Final_Role_Id = finalRoleId;
 
-            await _gamesRepository.AddGame(gameToSave);
+            return await _gamesRepository.AddGame(gameToSave);
         }
 
         public async Task DeleteGame (int gameId)

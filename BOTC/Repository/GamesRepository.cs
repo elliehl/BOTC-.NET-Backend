@@ -22,7 +22,7 @@ namespace BOTC.Repository
             try
             {
                 using var connection =  _context.GetConnection();
-                var query = "SELECT date, game_won, is_evil, comments, r.name AS starting_role, r1.name as final_role, t.name as                                                                                       type " +
+                var query = "SELECT g.id, date, game_won, is_evil, comments, r.name AS starting_role, r1.name as final_role, t.name as                                                                                       type " +
                   "FROM games g " +
                   "JOIN roles r ON r.id = g.starting_role_id " +
                   "JOIN roles r1 ON r1.id = g.final_role_id " +
@@ -61,18 +61,19 @@ namespace BOTC.Repository
             return game;
         }
 
-        public async Task AddGame(GameDTO game)
+        public async Task<int> AddGame(GameDTO game)
         {
             var parameters = new { Date = game.Date, Game_Won = game.Game_Won, Is_Evil = game.Is_Evil, Comments = game.Comments,
                                    Starting_Role_Id = game.Starting_Role_Id, Final_Role_Id = game.Final_Role_Id};
 
             var query = "INSERT INTO games (date, game_won, is_evil, comments, starting_role_id, final_role_id) " +
-                        "VALUES (@Date, @Game_Won, @Is_Evil, @Comments, @Starting_Role_Id, @Final_Role_Id)";
+                        "VALUES (@Date, @Game_Won, @Is_Evil, @Comments, @Starting_Role_Id, @Final_Role_Id); " +
+                        "SELECT LAST_INSERT_ID()";
 
             try
             {
                 using var connection = _context.GetConnection();
-                await connection.ExecuteAsync(query, parameters);
+                return await connection.ExecuteScalarAsync<int>(query, parameters);
             }
             catch (Exception ex)
             {
@@ -146,11 +147,6 @@ namespace BOTC.Repository
                 Console.WriteLine(ex);
                 throw;
             } 
-        }
-
-        public Task EditGame(GameEntity game, int gameId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

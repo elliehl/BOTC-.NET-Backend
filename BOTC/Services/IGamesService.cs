@@ -7,8 +7,8 @@ namespace BOTC.Services
     public interface IGamesService
     {
         Task<IEnumerable<AddGameDTO>> GetGames();
-        Task <AddGameDTO> GetGameById(int id);
-        Task AddGame(AddGameDTO game);
+        Task<AddGameDTO> GetGameById(int id);
+        Task<int> AddGame(AddGameDTO game);
         Task DeleteGame(int gameId);
         Task EditGame(AddGameDTO game, int gameId);
     }

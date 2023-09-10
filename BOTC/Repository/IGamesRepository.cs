@@ -6,7 +6,7 @@ namespace BOTC.Repository
 	{
         Task<IEnumerable<GameEntity>> GetGames();
         Task<GameEntity> GetGameById(int id);
-        Task AddGame(GameDTO game);
+        Task<int> AddGame(GameDTO game);
         Task DeleteGame(int id);
         Task EditGame(GameDTO game, int gameId);
         Task<int> GetRoleId(string startingRole);

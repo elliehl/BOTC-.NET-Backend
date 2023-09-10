@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BOTC.Models;
 using BOTC.Models.DTOs;
 using BOTC.Models.Entities;
 
@@ -10,6 +11,7 @@ namespace BOTC.Mappers
 		{
 			CreateMap<AddGameDTO, GameDTO>();
 			CreateMap<GameEntity, AddGameDTO>();
+			CreateMap<AddGameDTO, AddGameResponse>();
         }
     }
 }
