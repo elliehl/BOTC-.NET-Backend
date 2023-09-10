@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using BOTC.Models.DTOs;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using BOTC.Models;
 
 namespace BOTC.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/")]
     [ApiController]
 
     public class GamesController : ControllerBase
@@ -28,7 +27,7 @@ namespace BOTC.Controllers
             return Ok(games);
         }
 
-        [HttpGet("/{gameId}")]
+        [HttpGet("{gameId}")]
         public async Task<IActionResult> GetGameById([FromRoute] int gameId)
         {
             var game = await _gamesService.GetGameById(gameId);
@@ -43,8 +42,11 @@ namespace BOTC.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _gamesService.AddGame(game);
-            return Ok("Game successfully added");
+            var createdGameId = await _gamesService.AddGame(game);
+            var createdGame = _mapper.Map<AddGameResponse>(game);
+            createdGame.Id = createdGameId;
+
+            return CreatedAtAction("AddGame", createdGame);
         }
 
         [HttpDelete("/{gameId}")]
@@ -58,7 +60,7 @@ namespace BOTC.Controllers
         public async Task<IActionResult> EditGame([FromBody] AddGameDTO game, [FromRoute] int gameId)
         {
             await _gamesService.EditGame(game, gameId);
-            return Ok("Game successfully edited");
+            return Ok();
         }
     }
 
