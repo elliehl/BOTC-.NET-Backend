@@ -1,0 +1,3 @@
+This project tracks a player's stats from Blood on the Clocktower. It has a page for game history, showing the starting and final role the player played as, the date the game was played, the alignment (good/evil), result (win/loss), and any comments the player wants to add. It also has a stats page where the player can see their overall stats, as well as stats by alignment, character type and role. The stats displayed are games played, wins, and win percentage, with the ability to sort by each within role stats.
+
+This repository contains the back end of the project, and the overall project is made using .NET, React, and MySQL.
